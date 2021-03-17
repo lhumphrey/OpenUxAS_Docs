@@ -1,9 +1,10 @@
 # OpenUxAS_Docs
 A placeholder for jekyll gh-pages style UxAS documentation
 
-# Steps to use remote themes with jekyll and GitHub pages
+## Steps to use remote themes with jekyll and GitHub pages
 
-Assumption: we are stating from an existing repository and adding a branch `gh-pages`
+Assumptions: 
+- we are stating from an existing repository and adding a branch `gh-pages`
 
 - From within the repository, create an orphan branch gh-pages that is empty
    - `git checkout --orphan gh-pages`
@@ -12,19 +13,24 @@ Assumption: we are stating from an existing repository and adding a branch `gh-p
    - `jekyll new .`
    - `rm -rf _posts; rm about.markdown; rm index.markdown`
 - Modify the jekyll gem version in your Gemfile to one supported by GitHub pages
-   `gem "jekyll", "~> 4.2.0"` to `gem "jekyll", "~> 3.9.0"
+   - `gem "jekyll", "~> 4.2.0"` to `gem "jekyll", "~> 3.9.0"
 - Follow the instructions on https://github.com/benbalter/jekyll-remote-theme, including:
-   - Remove the following from your Gemfile: `gem "minima", "~> 2.5"`
+   - Remove the following from your Gemfile
+      - `gem "minima", "~> 2.5"`
    - Add the following to your Gemfile
       - `gem "jekyll-remote-theme"`
       - `gem "github-pages", group: :jekyll_plugins`
 - Run `bundle update jekyll`
 - Run `bundle install`
 - Update relevant fields in your _config.yml
+- Delete the following fields in your _config.yml
+   - `baseurl`
+   - `url`
+   - `twitter_username`
+   - `github_username`
 - Change the following in your _config.yml file
    - `theme: minima` to `remote_theme: rundocs/jekyll-rtd-theme`
-- Delete the entries for `baseurl`, `url`, and `github_username`
-- Add the following to your _config.yml
+- Add the following to your _config.yml (the first is necessary, the rest are recommended for 
 ```
 plugins:
   - jekyll-remote-theme (necessary for using a remote theme)
