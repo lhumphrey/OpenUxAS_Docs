@@ -1,7 +1,7 @@
 title: OpenUxAS
 description: A software framework for mission-level autonomy for teams of unmanned vehicles
 
-theme: null
+remote_theme: rundocs/jekyll-rtd-theme
 
 # debug:
 #   compress: true
@@ -12,6 +12,7 @@ readme_index:
   with_frontmatter: true
 
 plugins:
+  - jekyll-remote-theme
   - jemoji
   - jekyll-avatar
   - jekyll-mentions
