@@ -47,3 +47,4 @@ readme_index:
 - Add and commit all files except those in _site (which should be in the .gitignore file anyway)
 - Issue command `git push` or `git push --set-upstream origin gh-pages` if this is the first time
 - In the settings for the repository, set GitHub pages to point to branch gh-pages (you only need to do this once)
+- You should be able to see the results at [https://lhumphrey.github.io/OpenUxAS_Docs/](https://lhumphrey.github.io/OpenUxAS_Docs/)
