@@ -30,10 +30,10 @@ Steps:
    - `github_username`
 - Change the following in your _config.yml file
    - `theme: minima` to `remote_theme: rundocs/jekyll-rtd-theme`
-- Add the following to your _config.yml (the first is necessary, the rest are defaults for the jekyll-rtd-theme)
+- Add the following to your _config.yml (the first plugin jekyll-remote-theme is necessary, the rest are defaults for the jekyll-rtd-theme)
 ```
 plugins:
-  - jekyll-remote-theme (necessary for using a remote theme)
+  - jekyll-remote-theme
   - jemoji
   - jekyll-avatar
   - jekyll-mentions
