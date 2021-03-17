@@ -48,3 +48,5 @@ readme_index:
 - Issue command `git push` or `git push --set-upstream origin gh-pages` if this is the first time
 - In the settings for the repository, set GitHub pages to point to branch gh-pages (you only need to do this once)
 - You should be able to see the results at [https://lhumphrey.github.io/OpenUxAS_Docs/](https://lhumphrey.github.io/OpenUxAS_Docs/)
+   - It can take awhile for results to propagate to GitHub pages
+   - The template includes a git revision number, so you can compare the number that shows up on GitHub pages to the one from your most recent push to check whether the most recent changes are being displayed on the site
