@@ -13,7 +13,7 @@ Steps:
    - `jekyll new .`
    - `rm -rf _posts; rm about.markdown; rm index.markdown`
 - Modify the jekyll gem version in your Gemfile to one supported by GitHub pages
-   - `gem "jekyll", "~> 4.2.0"` to `gem "jekyll", "~> 3.9.0"
+   - `gem "jekyll", "~> 4.2.0"` to `gem "jekyll", "~> 3.9.0"`
 - Follow the instructions on https://github.com/benbalter/jekyll-remote-theme, including:
    - Remove the following from your Gemfile
       - `gem "minima", "~> 2.5"`
