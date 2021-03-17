@@ -21,6 +21,8 @@
 title: OpenUxAS
 description: A software framework for mission-level multi-vehicle autonomy
 
+theme: null
+
 readme_index:
   with_frontmatter: true
 
