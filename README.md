@@ -30,16 +30,18 @@ Steps:
    - `github_username`
 - Change the following in your _config.yml file
    - `theme: minima` to `remote_theme: rundocs/jekyll-rtd-theme`
-- Add the following to your _config.yml (the first plugin jekyll-remote-theme is necessary, the rest are defaults for the jekyll-rtd-theme)
+- Modify the plugins section of your _config.yml (the first plugin jekyll-remote-theme is necessary, the rest are defaults for the jekyll-rtd-theme)
 ```
 plugins:
   - jekyll-remote-theme
   - jemoji
   - jekyll-avatar
   - jekyll-mentions
-
+```
+- Add this to your _config.yml
+```
 readme_index:
-       with_frontmatter: true
+  with_frontmatter: true
 ```
 - Create content in a `README.md` file at the top level
 - Run the command `bundle exec jekyll serve`
