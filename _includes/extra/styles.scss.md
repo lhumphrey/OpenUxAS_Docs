@@ -1,0 +1,15 @@
+.markdown-body {
+
+  .highlight pre,
+  pre {
+    max-height: 300px;
+  }
+
+  pre code,
+  pre tt {
+    max-height: 300px;
+  }
+}
+
+
+
