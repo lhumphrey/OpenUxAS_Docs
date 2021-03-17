@@ -26,7 +26,6 @@ remote_theme: rundocs/jekyll-rtd-theme
 # Build settings
 
 plugins:
-  - jekyll-feed
   - jekyll-remote-theme
   - jemoji
   - jekyll-avatar
