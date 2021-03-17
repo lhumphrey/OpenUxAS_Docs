@@ -4,6 +4,7 @@ A placeholder for jekyll gh-pages style UxAS documentation
 ## Steps to use remote themes with jekyll and GitHub pages
 
 The remote theme jekyll-rtd-theme we will use is self-documented [here](https://jekyll-rtd-theme.rundocs.io)
+
 Assumption: We are stating from an existing repository and adding a branch `gh-pages`
 
 Steps:
