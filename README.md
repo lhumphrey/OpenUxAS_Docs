@@ -1,9 +1,15 @@
 # OpenUxAS_Docs
 A placeholder for jekyll gh-pages style UxAS documentation
 
-## Steps to use remote themes with jekyll and GitHub pages
+## Tips for working with remote themes with jekyll and GitHub pages
+- The remote theme jekyll-rtd-theme we will use is self-documented [here](https://jekyll-rtd-theme.rundocs.io)
+   - I recommend downloading the files for the theme so you can see how they did things
+   - This is [their download link](https://github.com/rundocs/jekyll-rtd-theme/zipball/develop)
+- GitHub pages can take a long time to propagate changes
+   - Look at the revision number on the generated website to tell whether the newest changes have been propagated
+   - GitHub does seem to email you really quickly if there is a build failure though 
 
-The remote theme jekyll-rtd-theme we will use is self-documented [here](https://jekyll-rtd-theme.rundocs.io)
+## Steps to use remote themes with jekyll and GitHub pages
 
 Assumption: We are stating from an existing repository and adding a branch `gh-pages`
 
