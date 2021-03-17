@@ -21,7 +21,7 @@
 title: OpenUxAS
 description: >- # this means to ignore newlines until "baseurl:"
   A software framework for mission-level multi-vehicle autonomy
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "TestProject" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  lhumphrey
 
