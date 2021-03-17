@@ -25,11 +25,17 @@ baseurl: "TestProject" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  lhumphrey
 
+readme_index:
+  with_frontmatter: true
+
 # Build settings
 remote_theme: rundocs/jekyll-rtd-theme
 plugins:
   - jekyll-feed
   - jekyll-remote-theme
+  - jemoji
+  - jekyll-avatar
+  - jekyll-mentions
 
 # Exclude from processing.
 # The following items will not be processed, by default.
