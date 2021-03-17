@@ -30,9 +30,6 @@ remote_theme: rundocs/jekyll-rtd-theme
 plugins:
   - jekyll-feed
   - jekyll-remote-theme
-  - jemoji
-  - jekyll-avatar
-  - jekyll-mentions
 
 # Exclude from processing.
 # The following items will not be processed, by default.
