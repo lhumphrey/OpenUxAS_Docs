@@ -24,8 +24,8 @@ A placeholder for jekyll gh-pages style UxAS documentation
 - To interactively edit and view the site, follow the same steps as in the previous section
 
 ## Tips for working with remote themes with jekyll and GitHub pages
-- If you push changes to the `gh-pages` branch of this repository back to GitHub, they'll show up at [https://lhumphrey.github.io/OpenUxAS_Docs/]
-- When you push changes to GitHub, GitHub pages can take a long time to propagate changes
+- If you push changes to the `gh-pages` branch of this repository back to GitHub, they'll show up at https://lhumphrey.github.io/OpenUxAS_Docs/
+- GitHub pages can take a long time to propagate these changes
    - Look at the revision number on the generated website to tell whether the newest changes have been propagated
    - GitHub does seem to email you really quickly if there is a build failure though 
 
