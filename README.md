@@ -13,6 +13,8 @@ A placeholder for jekyll gh-pages style UxAS documentation
       - Enter this address in a browser window
    - Note that updates to the website based on new/removed/edited files will automatically be generated, though you have to refresh the website in your browser to see them
       - Exception: changes to _config.yml
+- The theme for this website is based on jekyll-rtd-theme, which has some self-documentation
+   - Recommend following the steps of the next section to get a copy of the theme and see demonstrations of its features
    
 ## To play with features locally in the jekyll-rtd-theme
 - One-time "installation" steps:
