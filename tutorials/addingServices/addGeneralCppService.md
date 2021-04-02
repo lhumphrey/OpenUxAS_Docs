@@ -4,22 +4,22 @@ order: 1
 
 # Creating a general service in C++
 
-Broadly speaking, development of a new service in any language requires considering:
-- What types of messages it subscribes to
-- What computations it should do when it receives a subscribed message
+Broadly speaking, developing a new OpenUxAS service in any language requires considering:
+- What types of messages the service subscribes to
+- What computations it should perform when it receives a subscribed message
 - What messages (if any) it should publish in response
 - Where it should save files (if any)
 
-Since OpenUxAS is written in C++, you'll generally want to compile a new service written in C++ as part of the main executable. When you run the OpenUxAS executable, you specify in an XML configuration file 1) which services you want to load and 2) values for any service-specific parameters. This XML configuration file is passed to the UxAS executable as a command line argument. This means that for services written in C++ and compiled as part of the main executable, you also need to consider:
-- What configurable parameters the service has
-- What the format of its XML configuration element
+Since OpenUxAS is written in C++, if you write a new service in C++, you'll probably want to compile it as part of the main executable. When you run the OpenUxAS executable, you provide the name of an XML configuration file as a command line argument. This XML configuration file specifies 1) which services OpenUxAS should load and 2) values for any service-specific parameters. This means that for services written in C++ and compiled as part of the main executable, you also need to consider:
+- What configurable parameters the service should have
+- What the format of its XML configuration element should be
 
 
 ## Basic steps
 
 OpenUxAS includes a template header file `00_ServiceTemplate.h` and source file `00_ServiceTemplate.cpp` for general services in C++. If `{UxAS_ROOT}` is your main OpenUxAS directory, then these files are located in directory `{UXAS_ROOT}/src/cpp/Services`.
 
-In general, creating a new non-task service consists of the following steps:
+In general, creating a new general service consists of the following steps:
 
 1. Choose a name `{ServiceName}` for your service
 2. In directory `{UxAS_ROOT}/src/cpp/Services`, copy `00_ServiceTemplate.h` to `{ServiceName}.h` and `00_ServiceTemplate.cpp` to `{ServiceName}.cpp`
@@ -33,24 +33,25 @@ In general, creating a new non-task service consists of the following steps:
    4. Declare any necessary private member data and functions
    5. Update the doxygen comments
 5. In source file `{ServiceName}.cpp`:
-   1. Update the logic of the member function `configure`
+   1. Update the logic of member function `configure`
    2. Add `#include` directives for any published or subscribed messages
    3. Add `#include` directives for any other necessary header files
-   4. Update the logic for member function `processLmcpMessage` to handle different types of subscribed message types
+   4. Update the logic for member function `processLmcpMessage` to handle different types of subscribed messages
    5. Define any necessary private member functions 
 6. Modify the build process to include any 3rd party dependencies
 7. Create and run an example to exercise the service
 
 ## An example C++ service
 
-Suppose we want to create a service called `JsonAirVehicleLoggerService` that receives `AirVehicleState` messages, converts portions of them to JSON format, and saves them to a file. More specifically, we'd like to specify 1) the name of the output file, 2) the IDs of air vehicles whose messages should be converted and saved, 3) the level of message content per vehicle to be converted and saved. We'd also like the service to publish a `KeyValuePair` message that reports the value of the ID of each vehicle the first time it is seen.
+Suppose we want to create a service called `JsonAirVehicleLoggerService` that receives `AirVehicleState` messages, converts portions of them to JSON format, and saves the JSON-formatted messages to a file. More specifically, we'd like to specify 1) the name of the output file, 2) the IDs of air vehicles whose messages should be converted and saved, 3) the level of message content per vehicle to be converted and saved. We'd also like the service to publish a `KeyValuePair` message that reports the value of the ID of each vehicle the first time it is seen.
 
-We decide that the XML configuration element for our service should look something like this:
+We decide that the XML configuration element for our service should have a format like this:
 ```xml
 <Service Type="JsonAirVehicleLoggerService" Filename="myOutputFile.txt">
-   <AirVehicle VehicleID="10" Level="0"/>
-   <AirVehicle VehicleID="11" Level="1"/>
-   <AirVehicle VehicleID="12" Level="2"/>
+   <AirVehicle VehicleID="3" Level="0"/>
+   <AirVehicle VehicleID="4" Level="1"/>
+   <AirVehicle VehicleID="5" Level="2"/>
+   <AirVehicle VehicleID="6" Level="1"/>
  </Service>
 ```
 
@@ -64,7 +65,7 @@ We also decide that the different reporting levels should save the following mes
 
 ## Creating the example C++ service
 
-After copying the template file and going through the basic steps above, we end up with the following header file
+After copying the template source and header files and going through the basic steps above, we end up with the following header file
 
 ```cpp
 /* 
@@ -102,20 +103,20 @@ namespace data
  * Example Configuration Element: 
  * <Service Type="JsonAirVehicleLoggerService" Filename="myOutput.txt">
  *   <AirVehicle ID="3" Level="0"/>
- *   <AirVehicle ID="4" Level="0"/>
- *   <AirVehicle ID="5" Level="1"/>
- *   <AirVehicle ID="6" Level="2"/>
+ *   <AirVehicle ID="4" Level="1"/>
+ *   <AirVehicle ID="5" Level="2"/>
+ *   <AirVehicle ID="6" Level="1"/>
  * </Service>
  *   
  * Options:
  *  - Filename - Name of the file in which to log results
- *  - - ID - The ID number of the air vehicle
+ *  - - ID - The ID of the air vehicle
  *  - - Level - The level of information to report: "0", "1", or "2"
  * 
  * Subscribed Messages:
  *  - afrl::cmasi::AirVehicleState
  * 
- * Sent Messages:
+ * Published Messages:
  *  - afrl::cmasi::KeyValuePair
  * 
  */
@@ -183,7 +184,7 @@ private:
 private:
 
     // Member variables to store output filename, a map of ID numbers to report Level based
-    // on sevice configuration element, and the set of ID numbers seen during execution
+    // on sevice configuration element, and the set of ID numbers seen so far during execution
     std::string m_outputFilename = std::string("output.txt");
     std::unordered_map<int64_t, int64_t> m_idToLevel;
     std::unordered_set<int64_t> m_seenIds;
@@ -357,7 +358,7 @@ processReceivedLmcpMessage(std::unique_ptr<uxas::communications::data::LmcpMessa
 }; //namespace uxas
 ```
 
-To write our service, we follow the steps above. Some things to take note of:
+To write our service, we follow the basic steps above. Some things to note:
 
 - For steps 1-3 we:
    - Replace `00_ServiceTemplate` with `JsonAirVehicleLoggerService`
@@ -366,22 +367,89 @@ To write our service, we follow the steps above. Some things to take note of:
    - Change the header guard string `UXAS_00_SERVICE_TEMPLATE_H` to `UXAS_JSON_AIR_VEHICLE_LOGGER_SERVICE_H`
    - Update function `s_directoryName()` to return `"JsonAirVehicleLogs"`
    - Include a header `nlohmann/json.hpp` for a 3rd party dependency for working with JSON
-   - Declare private member variables `m_outputFilename` (with default value `"output.txt"`), `m_idToLevelMap`, and `m_seenVehicleSet` that will be used in the source file
-   - Update the main doxygen-compatible comment block at the top, paying particular attention to the example configuration element, its options, and the lists of subscribed and sent messages
+   - Declare private member variables `m_outputFilename` (with default value `"output.txt"`), `m_idToLevel`, and `m_seenIds` that will be used in the source file
+   - Update the main doxygen-compatible comment block at the top, paying particular attention to the example configuration element, its options, and the lists of subscribed and published messages
 - For step 5 we do the following in the source file:
    - Include headers for necessary messages: `"afrl/cmasi/KeyValuePair.h"` and `"afrl/cmasi/AirVehicleState.h"`
    - Include headers `<fstream>` and `<string>`
    - Update the logic of function `configure` to process an XML configuration element of the form given in the main comment block of the header
       - (Optional convention) Define macros for configuration element and attribute strings 
-      - Save configuration parameters to `m_outputFilename` (if applicable) and `m_idToLevel`
+      - Update private member variables `m_outputFilename` (if applicable) and `m_idToLevel` based on the XML configuration element
       - Log errors and set `isSuccess = False` if the configuration element is invalid
    - Update the logic of function `processReceivedLmcpMessage` to process `AirVehicleState` messages
-      - Output a `KeyValuePair` of the form (`JsonAirVehicleLoggerVehicleID`,`{ID}`) the first time an `ID` number corresponding to an `AirVehicle` configuration element is seen
+      - Output a `KeyValuePair` of the form (`JsonAirVehicleLoggerVehicleID`,`{ID}`) if this is the first time an `AirVehicleState` message contains an `ID` number corresponding to that of an `AirVehicle` configuration element
       - Construct and save a JSON-formatted message to the configured output file with content depending on the `Level` of the `AirVehicle` configuration element with the corresponding `ID`
 
 
 ## Compiling the example C++ service
-(TBD)
+
+OpenUxAS has a makefile in `{UXAS_ROOT}/Makefile`. If you have built OpenUxAS before and are not introducing any new 3rd party dependencies, then you can simply run the makefile from `{UXAS_ROOT}` by issuing the command `make all`.
+
+However if you haven't built OpenUxas before, the makefile needs certain environment variables to be set correctly and all 3rd party dependencies to be available. The easiest way to address these concerns is to use the Python-based anod build process included with OpenUxAS. The main `anod` script is in `{UXAS_ROOT}`. This script relies on anod configuration files in `{UXAS_ROOT}/infrastructure/specs` that specify things like project build rules and dependencies. The main OpenUxAS anod configuration file is `uxas.anod`. If we add a new 3rd party dependency, we also need to add an anod configuration file for the dependency. There is also a file `{UXAS_ROOT}/infrastructure/specs/config/repositories.yaml` that specifies where 3rd party dependencies can be obtained, e.g. through GitHub or from a local repository.
+
+In this example, the header includes `#include <nlohmann/json.hpp>`, a reference to a GitHub project called JSON for Modern C++ at https://github.com/nlohmann/json. Suppose we decide to refer to this dependency in anod as `jsonmcpp`. We therefore add the following entry to `{UXAS_ROOT}/infrastructure/specs/config/repositories.yaml` to enable anod to download the repository for us:
+```
+jsonmcpp:
+  revision: develop
+  url: https://github.com/nlohmann/json.git
+  vcs: git
+```
+
+We also create a file `{UXAS_ROOT}/infrastructure/specs/jsonmcpp.anod`:
+```python
+from e3.anod.loader import spec
+from e3.anod.spec import Anod
+
+
+class JsonMCPP(spec('github')):
+
+    github_project = 'jsonmcpp'
+
+    @property
+    def build_deps(self):
+        return [Anod.Dependency('compiler'),
+                Anod.Dependency('cmake')]
+
+    @Anod.primitive()
+    def build(self):
+        self.cmake_build()
+```
+
+Finally, we update the `build_deps` property and `build_setenv` method of class `Uxas` in file `{UXAS_ROOT}/infrastructure/specs/uxas.anod` to include this new dependency:
+```python
+    @property
+    def build_deps(self):
+        return [
+            Anod.Dependency('pugixml'),
+            Anod.Dependency('zeromq'),
+            Anod.Dependency('cppzmq'),
+            Anod.Dependency('uxas-lmcp', qualifier='lang=cpp'),
+            Anod.Dependency('serial'),
+            Anod.Dependency('czmq'),
+            Anod.Dependency('zyre'),
+            Anod.Dependency('sqlite'),
+            Anod.Dependency('boost'),
+            Anod.Dependency('sqlitecpp'),
+            Anod.Dependency('jsonmcpp')]
+            
+    # ...        
+            
+    def build_setenv(self):
+        self.deps['zeromq'].setenv(shared=False)
+        self.deps['cppzmq'].setenv()
+        self.deps['pugixml'].setenv()
+        self.deps['serial'].setenv()
+        self.deps['uxas-lmcp'].setenv()
+        self.deps['czmq'].setenv()
+        self.deps['zyre'].setenv()
+        self.deps['sqlite'].setenv()
+        self.deps['sqlitecpp'].setenv()
+        self.deps['boost'].setenv()
+        self.deps['czmq'].setenv()
+        self.deps['jsonmcpp'].setenv()
+```
+
+With these in place, we can now build OpenUxas with the new service by going to `{UXAS_ROOT}` and issuing command `./anod build uxas`. After that, we can rebuild by issue command `make all`.
 
 
 ## Running the example C++ service
@@ -394,7 +462,7 @@ By convention, OpenUxAS examples are placed in subdirectories within `{UXAS_ROOT
    - With shell scripts from directory `{UXAS_ROOT}/examples/{My_Example}` using command: `./runAMASE_Template.sh & ./runUxAS_Template.sh`
 4. Press the Play button in the OpenAMASE simulation pane
    - In the OpenAMASE simulation, vehicles should start to move
-   - In the terminal, the OpenUxAS binary should output text, including "INITIALIZING" and "STARTING" messages from `JsonAirVehicleLoggerService`
+   - In the terminal, OpenUxAS should output text, including "INITIALIZING" and "STARTING" messages from `JsonAirVehicleLoggerService`
 5. After the simulation has run for at least a few seconds, 
    - If you used the `run-example` script, close the OpenAMASE GUI and the OpenUxAS process will terminate automatically
    - If you used the shell scripts, close the OpenAMASE GUI and also kill the OpenUxAS process by pressing Ctrl+C in the terminal window
@@ -402,4 +470,3 @@ By convention, OpenUxAS examples are placed in subdirectories within `{UXAS_ROOT
    - Subdirectory `JsonAirVehicleLogs` should contain an output file with JSON-formatted messages
    - Subdirectory `SavedMessages` should contain a SQL file `messageLog_1_0.db3` that contains the `KeyValuePair` messages published by `JsonAirVehicleLoggerService`    
 
-  
